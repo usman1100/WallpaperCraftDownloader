@@ -12,17 +12,17 @@ pages = 5
 
 
 dirName = 'jpgs'
- 
+
 try:
     os.mkdir(dirName)
-    print("Directory " , dirName ,  " Created ") 
+    print("Directory ", dirName, " Created ")
 except FileExistsError:
-    print("Directory " , dirName ,  " already exists")
+    print("Directory ", dirName, " already exists")
 
 
 for j in range(pages):
 
-    url="https://wallpaperscraft.com/catalog/" + category + "/page" + str(j)
+    url = "https://wallpaperscraft.com/catalog/" + category + "/page" + str(j)
 
     page = requests.get(url)
 
@@ -40,22 +40,24 @@ for j in range(pages):
 
         newSoup1 = BeautifulSoup(newPage1.content, 'html.parser')
 
-        temp = newSoup1.find('a', text = re.compile(resolution))
+        temp = newSoup1.find('a', text=re.compile(resolution))
 
         newSoup2URL = 'https://wallpaperscraft.com' + temp['href']
 
-
         newPage2 = requests.get(newSoup2URL)
-        
+
         newSoup2 = BeautifulSoup(newPage2.content, 'html.parser')
 
-        downloadLink = newSoup2.find(class_="gui-button gui-button_full-height")['href']
+        className = "gui-button gui-button_full-height"
+
+        downloadLink = newSoup2.find(class_=className)
+
+        downloadLink = downloadLink['href']
+
         filePath = path + category + str(count) + '.jpg'
 
         urllib.request.urlretrieve(downloadLink, filePath)
 
-        print("Wallpaer " ,count+1 , " Downloaded")
+        print("Wallpaper ", count+1, " Downloaded")
 
-        count+=1
-
-
+        count += 1
